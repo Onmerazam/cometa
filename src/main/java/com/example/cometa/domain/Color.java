@@ -16,7 +16,17 @@ public class Color {
     private Integer numberColor;
     private String coatingType;
     private String manufact;
-    private float value;
+    private double value;
+
+    public Color(){
+
+    }
+    public Color(Integer numberColor, String coatingType, String manufact, double value) {
+        this.numberColor = numberColor;
+        this.coatingType = coatingType;
+        this.manufact = manufact;
+        this.value = value;
+    }
 
     public Integer getNumberColor() {
         return numberColor;
@@ -42,7 +52,7 @@ public class Color {
         this.manufact = manufact;
     }
 
-    public float getValue() {
+    public double getValue() {
         return value;
     }
 
