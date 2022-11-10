@@ -28,6 +28,14 @@ public class Color {
         this.value = value;
     }
 
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
+
     public Integer getNumberColor() {
         return numberColor;
     }

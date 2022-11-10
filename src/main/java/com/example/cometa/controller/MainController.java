@@ -1,4 +1,4 @@
-package com.example.cometa;
+package com.example.cometa.controller;
 
 import com.example.cometa.domain.Color;
 import com.example.cometa.repos.ColorRepo;
@@ -11,27 +11,31 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Map;
 
 @Controller
-public class GreetingController {
+public class MainController {
 
     @Autowired
     private ColorRepo colorRepo;
     private double value;
 
-    @GetMapping("/greeting")
-    public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name,
-                           Map<String, Object> model) {
-        model.put("name", name);
+    @GetMapping("/")
+    public String greeting(Map<String, Object> model) {
 
         return "greeting";
     }
-    @GetMapping
+    @GetMapping("/main")
     public String main(Map<String, Object> model){
         Iterable<Color> colors = colorRepo.findAll();
         model.put("colors",colors);
         return "main";
     }
 
-    @PostMapping("add")
+    @GetMapping("/error")
+    public String error(Map<String, Object> model){
+
+        return "main";
+    }
+
+    @PostMapping("/main")
     public String add(@RequestParam Integer numberColor,
                       @RequestParam String coatingType,
                       @RequestParam String manufact,
@@ -63,16 +67,18 @@ public class GreetingController {
         }
         Iterable<Color> colors = colorRepo.findAll();
         model.put("colors",colors);
-        return "main";
+        return "redirect:/main";
     }
 
     @GetMapping("update")
-    String update(@RequestParam int id, @RequestParam double value, Map<String,Object> model){
+    String update(@RequestParam int id, @RequestParam double value, Map<String,Object> model) throws NumberFormatException{
         Color color = colorRepo.findById(id);
         color.setValue(value);
         Iterable<Color> colors = colorRepo.findAll();
         colorRepo.save(color);
         model.put("colors",colors);
-        return "main";
+        return "redirect:/main";
     }
+
+
 }
