@@ -14,10 +14,11 @@
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">С возвращением!</h1>
                                 </div>
-                                <form action="/login" method="post" class="user">
+                                <form action="${path}" method="post" class="user">
                                     <div class="form-group">
+                                        <input type="hidden" name="_csrf" value="${_csrf.token}">
                                         <input type="text" class="form-control form-control-user"
                                                id="exampleInputEmail" name="username" aria-describedby="emailHelp"
                                                placeholder="Enter Email Address...">
@@ -33,9 +34,9 @@
                                                 Me</label>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="_csrf" value="${_csrf.token}">
 
-                                    <input type="submit" value="Sign In" class="btn btn-primary btn-user btn-block"/>
+
+                                    <input type="submit" value="Отправить" class="btn btn-primary btn-user btn-block"/>
                                     <hr>
                                 </form>
 
@@ -43,7 +44,7 @@
 
                                 </div>
                                 <div class="text-center">
-                                    <a class="small" href="/registration">Create an Account!</a>
+                                    <a class="small" href="/registration">Создать аккаунт!</a>
                                 </div>
                             </div>
                         </div>

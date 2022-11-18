@@ -61,7 +61,7 @@ public class MainController {
         return "main";
     }
     @GetMapping("delete")
-    String delete(@RequestParam (name="id", required = false) int id,Map<String,Object> model){
+    public String delete(@RequestParam (name="id", required = false) int id,Map<String,Object> model){
         if (colorRepo.findById(id) != null){
             colorRepo.deleteById(id);
         }
@@ -71,7 +71,7 @@ public class MainController {
     }
 
     @GetMapping("update")
-    String update(@RequestParam int id, @RequestParam double value, Map<String,Object> model) throws NumberFormatException{
+    public String update(@RequestParam int id, @RequestParam double value, Map<String,Object> model) throws NumberFormatException{
         Color color = colorRepo.findById(id);
         color.setValue(value);
         Iterable<Color> colors = colorRepo.findAll();
