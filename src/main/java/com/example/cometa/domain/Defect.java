@@ -11,17 +11,27 @@ public class Defect {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
-    private String name;
     private String description;
-    private Integer productid;
+
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
+
+    @OneToOne(mappedBy = "defect", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private DefectCorrection defectCorrection;
+
+    @ElementCollection
+    @CollectionTable(name="defect_img", joinColumns=@JoinColumn(name = "Defect_id"))
+    @Column(name="image_address")
+    private Set<String> defectImages;
 
     public Defect(){
 
     }
-    public Defect(String name, String description, Integer product){
-        this.productid = product;
-        this.name = name;
+    public Defect(String description, Product product, Set<String> defectImages){
+        this.product = product;
         this.description = description;
+        this.defectImages = defectImages;
     }
 
     public Integer getId() {
@@ -32,14 +42,6 @@ public class Defect {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
     public String getDescription() {
         return description;
     }
@@ -48,12 +50,31 @@ public class Defect {
         this.description = description;
     }
 
-    public Integer getProductid() {
-        return productid;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProductid(Integer productid) {
-        this.productid = productid;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
+    public DefectCorrection getDefectCorrection() {
+        return defectCorrection;
+    }
+
+    public void setDefectCorrection(DefectCorrection defectCorrection) {
+        this.defectCorrection = defectCorrection;
+    }
+
+    public Set<String> getDefectImages() {
+        return defectImages;
+    }
+
+    public void setDefectImages(Set<String> defectImages) {
+        this.defectImages = defectImages;
+    }
+
+    enum Status{
+        CORRECTED, NOT_CORRECTED;
+    }
 }

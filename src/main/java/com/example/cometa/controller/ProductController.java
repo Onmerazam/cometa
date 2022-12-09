@@ -1,13 +1,11 @@
 package com.example.cometa.controller;
 
-import com.example.cometa.domain.Color;
-import com.example.cometa.domain.Defect;
-import com.example.cometa.domain.Product;
+import com.example.cometa.domain.*;
 import com.example.cometa.repos.DefectRepo;
 import com.example.cometa.repos.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +24,8 @@ public class ProductController {
     @Autowired
     private ProductRepo productRepo;
 
+
+
     @Autowired
     private DefectRepo defectRepo;
 
@@ -33,17 +33,21 @@ public class ProductController {
     private String uploadPath;
 
     @GetMapping("/products")
-    public String products(Map<String, Object> model){
+    public String products(
+            @AuthenticationPrincipal User user,
+            Model model){
         Iterable<Product> products = productRepo.findAll();
-        model.put("products", products);
+        model.addAttribute("user", user);
+        model.addAttribute("products", products);
         return "products";
     }
 
     @PostMapping("/products")
     public String add(@RequestParam String name,
+                      @RequestParam String description,
                       @RequestParam("file") MultipartFile file,
                       Map<String, Object> model) throws IOException {
-        Product product = new Product(name);
+        Product product = new Product(name, description);
 
         if (file != null && !file.getOriginalFilename().isEmpty()){
 
@@ -69,12 +73,14 @@ public class ProductController {
 
     @GetMapping("/products/{product}")
     public String productView(@PathVariable Product product,
+                              @AuthenticationPrincipal User user,
                               Model model){
 
-        Iterable<Defect> defects = defectRepo.findByProductid(product.getId());
-        model.addAttribute("defects", defects);
-        model.addAttribute("product",product);
+        Iterable<Defect> defects = defectRepo.findByProduct(product);
 
+        model.addAttribute("defects", defects);
+        model.addAttribute("product", product);
+        model.addAttribute("user", user);
         return "productView";
     }
 

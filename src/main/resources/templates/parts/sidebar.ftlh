@@ -29,6 +29,11 @@
             <i class="fas fa-fw fa-table"></i>
             <span>Robcom</span></a>
     </li>
+    <li class="nav-item active">
+        <a class="nav-link" href="/user">
+            <i class="fas fa-fw fa-user"></i>
+            <span>Users</span></a>
+    </li>
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

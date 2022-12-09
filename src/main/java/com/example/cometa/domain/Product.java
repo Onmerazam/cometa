@@ -1,9 +1,7 @@
 package com.example.cometa.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 public class Product {
@@ -12,15 +10,22 @@ public class Product {
     @GeneratedValue(strategy=GenerationType.AUTO)
     private Integer id;
 
+
+
     private String name;
+    private String description;
     private String filename;
+
+    @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Defect> defectSet;
 
    public Product(){
 
    }
 
-    public Product(String name){
+    public Product(String name, String description){
         this.name = name;
+        this.description = description;
     }
 
     public Integer getId() {
@@ -45,5 +50,21 @@ public class Product {
 
     public void setFilename(String filename) {
         this.filename = filename;
+    }
+
+    public Set<Defect> getDefectSet() {
+        return defectSet;
+    }
+
+    public void setDefectSet(Set<Defect> defectSet) {
+        this.defectSet = defectSet;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

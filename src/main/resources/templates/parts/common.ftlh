@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Cometa</title>
+    <link rel="shortcut icon" href="/static/img/ico.png" type="image/x-icon">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
 
@@ -34,19 +35,23 @@
     <script src="/vendor/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="/js/sb-admin-2.min.js"></script>
+
 
     <!-- Page level plugins -->
     <script src="/vendor/datatables/jquery.dataTables.min.js"></script>
     <script src="/vendor/datatables/dataTables.bootstrap4.min.js"></script>
 
+    <link href="/static/css/fileUploaderStyle.css" rel="stylesheet" >
+    <script type="text/javascript" src="/static/js/jquery-3.3.1.min.js"></script>
+    <script type="text/javascript" src="/static/js/FileUploaderScript.js"></script>
+
  </head>
-<body id="page-top">
+<body id="page-top" class="sidebar-toggled">
 <#nested>
 
 
 
-
+<script src="/js/sb-admin-2.min.js"></script>
 </body>
 </html>
 </#macro>

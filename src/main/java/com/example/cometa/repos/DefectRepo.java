@@ -9,7 +9,9 @@ import java.util.List;
 
 public interface DefectRepo extends JpaRepository<Defect, Integer> {
 
-    List<Defect> findByProductid(Integer productid);
+    List<Defect> findByProduct(Product product);
+
+    Defect findById(int id);
 
 
 

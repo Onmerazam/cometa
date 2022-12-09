@@ -3,16 +3,34 @@
     max-height:290px;
      width: 100%;
 }
+
+.img_def_prev{
+    object-fit: cover;
+    max-height:130px;
+    width: 100%;
+    border-radius:5px;
+}
 .img_def{
     object-fit: cover;
     max-height:290px;
-     width: 100%;
+    width: 100%;
+    height:100%;
+    border-radius:5px;
 }
+.form-edit-defect-head{
+    display:none;
+}
+.form-edit-correction-head{
+    display:none;
+}
+
 @media screen and (max-width: 590px){
   .img_product {
     max-height: 95px;
   }
   .img_def {
-      max-height: 200px;
+
+      max-height: 250px;
+      border-radius:5px;
     }
 }

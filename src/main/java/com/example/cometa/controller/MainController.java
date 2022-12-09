@@ -1,9 +1,12 @@
 package com.example.cometa.controller;
 
 import com.example.cometa.domain.Color;
+import com.example.cometa.domain.User;
 import com.example.cometa.repos.ColorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,14 +21,19 @@ public class MainController {
     private double value;
 
     @GetMapping("/")
-    public String greeting(Map<String, Object> model) {
-
+    public String greeting(
+            @AuthenticationPrincipal User user,
+            Model model) {
+        model.addAttribute("user", user);
         return "greeting";
     }
     @GetMapping("/main")
-    public String main(Map<String, Object> model){
+    public String main(
+            @AuthenticationPrincipal User user,
+            Model model){
         Iterable<Color> colors = colorRepo.findAll();
-        model.put("colors",colors);
+        model.addAttribute("user", user);
+        model.addAttribute("colors",colors);
         return "main";
     }
 
