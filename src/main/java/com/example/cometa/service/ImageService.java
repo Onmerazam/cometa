@@ -18,26 +18,30 @@ public class ImageService {
     @Value("${upload.path}")
     String uploadPath;
 
-    public Defect deleteDefectImage (Defect defect, String address){
+    public Set<String> deleteImage (Set<String> setOfImages, String address){
         File file = new File(uploadPath + "/" + address);
         file.delete();
-        Set<String> defectImages = defect.getDefectImages();
-        defectImages.remove(address);
-        defect.setDefectImages(defectImages);
-        return defect;
+        setOfImages.remove(address);
+        return setOfImages;
     }
 
-    public void deleteAllDefectImagesFromStorage (Defect defect){
+    public void deleteAllDefectImages (Defect defect){
 
         Set<String> defectImages = defect.getDefectImages();
+        Set<String> correctImages = defect.getDefectCorrection().getImageCorrections();
         for (String defectImage : defectImages){
             File file = new File(uploadPath + "/" + defectImage);
             file.delete();
         }
+        for (String correctImage : correctImages){
+            File file = new File(uploadPath + "/" + correctImage);
+            file.delete();
+        }
+
     }
 
-    public Set<String> addDefectImages (MultipartFile files[]) throws IOException {
-        Set<String> defectImages = new HashSet<>();
+    public Set<String> addImages (MultipartFile files[]) throws IOException {
+        Set<String> setOfImages = new HashSet<>();
         for (MultipartFile file : files){
             if (file != null && !file.getOriginalFilename().isEmpty()){
                 File uploadDir = new File(uploadPath);
@@ -46,14 +50,14 @@ public class ImageService {
                 }
                 String uuidFile = UUID.randomUUID().toString();
                 String resultFileName = uuidFile + "." + file.getOriginalFilename();
-                defectImages.add(resultFileName);
+                setOfImages.add(resultFileName);
                 file.transferTo(new File(uploadPath + "/" + resultFileName));
             }
         }
-        return defectImages;
+        return setOfImages;
     }
 
-    public Set<String> addDefectImages (Set<String> defectImages, MultipartFile files[]) throws IOException {
+    public Set<String> addImages (Set<String> setOfImages, MultipartFile files[]) throws IOException {
 
         for (MultipartFile file : files){
             if (file != null && !file.getOriginalFilename().isEmpty()){
@@ -63,11 +67,11 @@ public class ImageService {
                 }
                 String uuidFile = UUID.randomUUID().toString();
                 String resultFileName = uuidFile + "." + file.getOriginalFilename();
-                defectImages.add(resultFileName);
+                setOfImages.add(resultFileName);
                 file.transferTo(new File(uploadPath + "/" + resultFileName));
             }
         }
-        return defectImages;
+        return setOfImages;
     }
 
 }

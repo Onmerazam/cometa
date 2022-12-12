@@ -40,7 +40,7 @@ public class DefectController {
                             @RequestParam("file") MultipartFile files[],
                             String name,
                             String desc) throws IOException {
-        Set<String> defectImages = imageService.addDefectImages(files);
+        Set<String> defectImages = imageService.addImages(files);
         Defect defect = new Defect(desc, product, defectImages);
         defectRepo.save(defect);
         return "redirect:/products/{product}";
@@ -51,7 +51,7 @@ public class DefectController {
                          @RequestParam("file") MultipartFile files[],
                          Map<String, Object> model) throws IOException {
         Set<String> defectImages = defect.getDefectImages();
-        defectImages = imageService.addDefectImages(defectImages, files);
+        defectImages = imageService.addImages(defectImages, files);
         defect.setDefectImages(defectImages);
         defectRepo.save(defect);
         return "redirect:/products/{product}/{defect}";
@@ -71,7 +71,7 @@ public class DefectController {
     public String defectDelete(@RequestParam (name="id", required = false) int id,
                                Model model){
         if (defectRepo.findById(id) != null){
-            imageService.deleteAllDefectImagesFromStorage(defectRepo.findById(id));
+            imageService.deleteAllDefectImages(defectRepo.findById(id));
             defectRepo.deleteById(id);
         }
         return "redirect:/products/{product}";
@@ -80,7 +80,6 @@ public class DefectController {
     @PostMapping("/products/{product}/{defect}/updateDefect")
     public String updateDefect(@PathVariable Defect defect,
                                @RequestParam(name = "desc") String description){
-
         defect.setDescription(description);
         defectRepo.save(defect);
         return "redirect:/products/{product}/{defect}";
@@ -89,8 +88,9 @@ public class DefectController {
     @GetMapping("/products/{product}/{defect}/deleteDefectImg/{address}")
     public String deleteImgCorrection(@PathVariable String address,
                                       @PathVariable Defect defect){
-
-        defect = imageService.deleteDefectImage(defect, address);
+        Set<String> defectImages = defect.getDefectImages();
+        defectImages = imageService.deleteImage(defectImages, address);
+        defect.setDefectImages(defectImages);
         defectRepo.save(defect);
         return "redirect:/products/{product}/{defect}";
     }

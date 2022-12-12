@@ -30,6 +30,9 @@
                         <li class="breadcrumb-item active" aria-current="page">${defect.id}</li>
                     </ol>
                 </nav>
+                <div class="alert alert-danger" role="alert">
+                    Простое danger оповещение - проверьте!
+                </div>
                 <div class="row">
                     <!-- start col defect -->
                     <div class="col-lg-6">
@@ -52,6 +55,7 @@
                                 <div class="defect-head">
                                     <p>Описание: ${defect.description}</p>
                                 </div>
+
                                 <div class="form-edit-defect-head">
                                     <form method="post" action="${defect.id}/updateDefect" enctype="multipart/form-data">
                                         <div class="form-row d-block d-md-flex">
@@ -123,7 +127,7 @@
                         <#if defect.defectCorrection??>
                             <div class="card mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h4 class="m-0 font-weight-bold text-gray-700">Исправление дефекта ${defect.id}</h4>
+                                    <h4 class="m-0 font-weight-bold text-gray-700">Исправление ${defect.id}</h4>
                                     <@lim.limitation "RC_EMPLOYEE">
                                     <div class="dropdown no-arrow">
                                         <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -291,7 +295,7 @@
                 <div  class="col-12 btn btn-success">
                     <span class="text">Принять</span>
                 </div>
-
+            </a>
             <div class="my-2"></div>
             <a href="${defect.id}/changeDefectCorrectionStatus/2">
                 <div class="col-12 btn btn-danger">
@@ -320,10 +324,7 @@
 </div>
 <!-- End of Page Wrapper -->
 
-<!-- Scroll to Top Button-->
-<a class="scroll-to-top rounded" href="#page-top">
-    <i class="fas fa-angle-up"></i>
-</a>
+
 
 <!-- Logout Modal-->
 <@lm.logoutModal />

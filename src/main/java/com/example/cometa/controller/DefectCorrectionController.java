@@ -5,6 +5,7 @@ import com.example.cometa.domain.Defect;
 import com.example.cometa.domain.DefectCorrection;
 import com.example.cometa.repos.DefectCorrectionRepo;
 import com.example.cometa.repos.DefectRepo;
+import com.example.cometa.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -28,6 +29,9 @@ public class DefectCorrectionController {
     private DefectRepo defectRepo;
 
     @Autowired
+    ImageService imageService;
+
+    @Autowired
     private DefectCorrectionRepo defectCorrectionRepo;
 
     @PostMapping("/products/{product}/{defect}/addDefectCorrection")
@@ -38,20 +42,7 @@ public class DefectCorrectionController {
         if (defectCorrectionRepo.findByDefectId(defect.getId()) != null){
             return "redirect:/products/{product}/{defect}";
         }
-        Set<String> imageCorrections = new HashSet<>();
-        for (MultipartFile file : files) {
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFileName = uuidFile + "." + file.getOriginalFilename();
-                imageCorrections.add(resultFileName);
-                file.transferTo(new File(uploadPath + "/" + resultFileName));
-
-            }
-        }
+        Set<String> imageCorrections = imageService.addImages(files);
         DefectCorrection defectCorrection = new DefectCorrection(message, culprit, defect, imageCorrections);
         defectCorrection.setStatus(CorrectStatus.REJECTED);
         defectCorrectionRepo.save(defectCorrection);
@@ -62,40 +53,17 @@ public class DefectCorrectionController {
     public String addCorrectionImage(@PathVariable Defect defect,
                                   @RequestParam("file_1") MultipartFile files[],
                                   Map<String, Object> model) throws IOException {
-        Set<String> imageCorrections = new HashSet<>();
-        imageCorrections = defect.getDefectCorrection().getImageCorrections();
-        for (MultipartFile file : files) {
-            if (file != null && !file.getOriginalFilename().isEmpty()) {
-                File uploadDir = new File(uploadPath);
-                if (!uploadDir.exists()) {
-                    uploadDir.mkdir();
-                }
-                String uuidFile = UUID.randomUUID().toString();
-                String resultFileName = uuidFile + "." + file.getOriginalFilename();
-                imageCorrections.add(resultFileName);
-                file.transferTo(new File(uploadPath + "/" + resultFileName));
-            }
-        }
+        Set<String> imageCorrections = defect.getDefectCorrection().getImageCorrections();
+        imageCorrections = imageService.addImages(imageCorrections, files);
         defect.getDefectCorrection().setImageCorrections(imageCorrections);
         defectRepo.save(defect);
-
         return "redirect:/products/{product}/{defect}";
     }
 
     @GetMapping("/products/{product}/{defect}/changeDefectCorrectionStatus/{status}")
     public String changeDefectCorrectionStatus(@PathVariable Defect defect,
                                                @PathVariable Integer status){
-        switch (status){
-            case 0:
-                defect.getDefectCorrection().setStatus(CorrectStatus.ACCEPTED);
-                break;
-            case 1:
-                defect.getDefectCorrection().setStatus(CorrectStatus.PENDING);
-                break;
-            case 2:
-                defect.getDefectCorrection().setStatus(CorrectStatus.REJECTED);
-                break;
-        }
+        defect.getDefectCorrection().setStatus(CorrectStatus.values()[status]);
         defectRepo.save(defect);
         return "redirect:/products/{product}/{defect}";
     }
@@ -104,11 +72,8 @@ public class DefectCorrectionController {
     public String deleteImgCorrection(@PathVariable String address,
                                       @PathVariable Defect defect){
 
-        File file = new File(uploadPath + "/" + address);
-        file.delete();
-        Set<String> imageCorrections = new HashSet<>();
-        imageCorrections = defect.getDefectCorrection().getImageCorrections();
-        imageCorrections.remove(address);
+        Set<String> imageCorrections = defect.getDefectCorrection().getImageCorrections();
+        imageCorrections = imageService.deleteImage(imageCorrections,address);
         defect.getDefectCorrection().setImageCorrections(imageCorrections);
         defectRepo.save(defect);
         return "redirect:/products/{product}/{defect}";
