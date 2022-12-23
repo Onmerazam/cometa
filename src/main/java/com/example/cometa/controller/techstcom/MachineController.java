@@ -5,12 +5,15 @@ import com.example.cometa.domain.techstcom.Machine;
 import com.example.cometa.repos.techstcom.MachineRepo;
 import com.example.cometa.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -41,5 +44,12 @@ public class MachineController {
         machine = imageService.addMachineImage(machine, file);
         machineRepo.save(machine);
         return "redirect:/machine";
+    }
+
+    @MessageMapping("/get_machine")
+    @SendTo("/topic/machine")
+    public Machine greeting() throws Exception {
+        Thread.sleep(1000); // simulated delay
+        return machineRepo.findByName("Senfeng-SF-6015M");
     }
 }

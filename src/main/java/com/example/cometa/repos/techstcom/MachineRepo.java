@@ -4,4 +4,5 @@ import com.example.cometa.domain.techstcom.Machine;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface MachineRepo extends JpaRepository<Machine, Long> {
+    Machine findByName(String name);
 }

@@ -4,6 +4,10 @@
 <#import "/parts/logoutModal.ftlh" as lm>
 <#import "/parts/limitation.ftlh" as lim>
 <@c.page>
+<script src="https://cdn.jsdelivr.net/npm/vue@2.7.8/dist/vue.js"></script>
+<script src="/webjars/sockjs-client/sockjs.min.js"></script>
+<script src="/webjars/stomp-websocket/stomp.min.js"></script>
+<script src="/js/app.js"></script>
 <div id="wrapper">
 
     <!-- Sidebar -->
@@ -45,17 +49,20 @@
                             <div class="card-body">
 
 
-                                <h5 class="card-title">${machine.name}</h5>
+                                <h5 id="mac-name" class="card-title">${machine.name}</h5>
 
                                 <small class="text-mute">${machine.category}</small>
                             </div>
                             <div class="card-footer text-success">
                                 <small class="text-success">Текущий статус: Работает</small>
                             </div>
+
                         </div>
                     </div>
                     </#list>
+                <div id="app" class="card-footer text-success">
 
+                </div>
 
 
                 </div>
@@ -152,7 +159,9 @@
 <!--</@lim.limitation>-->
 <script>
     $(document).ready(function () {
+
     bsCustomFileInput.init()
     })
 </script>
+<script src="/js/main.js"></script>
 </@c.page>

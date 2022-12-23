@@ -34,6 +34,7 @@ create table defect_correction (
     id integer not null,
     culprit varchar(255),
     message varchar(255),
+    dtk_comment varchar(255),
     status integer,
     defect_id integer,
     primary key (id)
@@ -45,6 +46,7 @@ create table product (
     description varchar(255),
     filename varchar(255),
     name varchar(255),
+    uuid varchar(255),
     primary key (id)
 );
 
