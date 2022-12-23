@@ -1,5 +1,5 @@
 package com.example.cometa.repos;
-import com.example.cometa.domain.Color;
+import com.example.cometa.domain.robcom.Color;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;

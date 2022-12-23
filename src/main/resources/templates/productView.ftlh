@@ -3,6 +3,7 @@
 <#import "parts/topbar.ftlh" as tb>
 <#import "parts/logoutModal.ftlh" as lm>
 <#import "parts/limitation.ftlh" as lim>
+<#import "functions/functions.ftlh" as func>
 <@c.page>
 <div id="wrapper">
 
@@ -58,19 +59,7 @@
                         <div class="card shadow mb-4 ">
                             <!-- Card Header - Dropdown -->
 
-                            <div class="card-header
-                            <#if def.defectCorrection??>
-                                <#if def.defectCorrection.status == "ACCEPTED">
-                                    border-bottom-success
-                                <#elseif def.defectCorrection.status == "PENDING">
-                                    border-bottom-warning
-                                <#elseif def.defectCorrection.status == "REJECTED">
-                                    border-bottom-danger
-                                </#if>
-                            <#else>
-                                border-bottom-secondary
-                            </#if>
-                                py-3 d-flex flex-row align-items-center justify-content-between">
+                            <div class="card-header <#if def.defectCorrection??>  <@func.border_color "${def.defectCorrection.status}" /> <#else> border-bottom-secondary </#if> py-3 d-flex flex-row align-items-center justify-content-between">
 
 
                                 <h6 class="m-0 font-weight-bold text-primary"><a class="stretched-link" href="/products/${product.id}/${def.id}">#${def.id}</a></h6>
@@ -101,13 +90,13 @@
                             <!-- Card Body -->
                             <div class="card-body">
                                 <p class="text-truncate">${def.description}</p>
-                                    <div class="row">
+                                    <div class="row" style="flex-wrap:nowrap; overflow:hidden;">
 
 
                                         <#list def.defectImages as img>
                                         <#if img??>
                                         <div class="col-6">
-                                            <img  class="img_def_prev"  src="/image/${img}">
+                                            <img  class="img_def_prev"  src="/image/${def.product.name}__${def.product.UUID}/${def.id}/${img}">
                                         </div>
                                         </#if>
                                         </#list>
@@ -191,7 +180,7 @@
                                 <div class="custom-file">
                                     <input type="file" name="file" class="custom-file-input" id="inputGroupFile03" multiple>
 
-                                    <label class="custom-file-label" for="inputGroupFile02" aria-describedby="inputGroupFileAddon03">Выберите фото</label>
+                                    <label class="custom-file-label" for="inputGroupFile03" aria-describedby="inputGroupFileAddon03">Выберите фото</label>
                                 </div>
 
                             </div>

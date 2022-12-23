@@ -19,21 +19,28 @@
     </div>
 
     <!-- Nav Item - Tables -->
-    <li class="nav-item active">
-        <a class="nav-link" href="/main">
-            <i class="fas fa-fw fa-table"></i>
-            <span>Tables</span></a>
+    <li class="nav-item">
+        <a class="nav-link" href="/machine">
+            <i class="fas fa-fw fa-industry"></i>
+            <span>Techstcom</span></a>
     </li>
-    <li class="nav-item active">
+    <li class="nav-item">
         <a class="nav-link" href="/products">
             <i class="fas fa-fw fa-table"></i>
             <span>Robcom</span></a>
     </li>
-    <li class="nav-item active">
+
+    <li class="nav-item">
+        <a class="nav-link" href="/main">
+            <i class="fas fa-fw fa-paint-brush"></i>
+            <span>Paint</span></a>
+    </li>
+    <li class="nav-item">
         <a class="nav-link" href="/user">
             <i class="fas fa-fw fa-user"></i>
             <span>Users</span></a>
     </li>
+
 
     <!-- Divider -->
     <hr class="sidebar-divider d-none d-md-block">

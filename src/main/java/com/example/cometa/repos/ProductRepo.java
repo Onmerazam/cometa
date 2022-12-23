@@ -1,6 +1,6 @@
 package com.example.cometa.repos;
 
-import com.example.cometa.domain.Product;
+import com.example.cometa.domain.robcom.Product;
 import org.springframework.data.repository.CrudRepository;
 
 public interface ProductRepo extends CrudRepository<Product, Integer> {

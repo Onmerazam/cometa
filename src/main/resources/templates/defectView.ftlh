@@ -3,6 +3,7 @@
 <#import "parts/topbar.ftlh" as tb>
 <#import "parts/logoutModal.ftlh" as lm>
 <#import "parts/limitation.ftlh" as lim>
+<#import "functions/functions.ftlh" as func>
 <@c.page>
 
 <div id="wrapper">
@@ -30,9 +31,10 @@
                         <li class="breadcrumb-item active" aria-current="page">${defect.id}</li>
                     </ol>
                 </nav>
-                <div class="alert alert-danger" role="alert">
-                    Простое danger оповещение - проверьте!
-                </div>
+
+                <#if defect.defectCorrection?? && defect.defectCorrection.dtkComment??>
+                <@func.functions "${defect.defectCorrection.status}" "${defect.defectCorrection.dtkComment}" />
+                </#if>
                 <div class="row">
                     <!-- start col defect -->
                     <div class="col-lg-6">
@@ -41,10 +43,10 @@
                                 <h4 class="m-0 font-weight-bold text-gray-700">Дефект ${defect.id}</h4>
                                 <@lim.limitation "DTK">
                                 <div class="dropdown no-arrow">
-                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
                                     </a>
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink">
+                                    <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink1">
                                         <div class="dropdown-header">Выберите дейстивие:</div>
                                         <a class="dropdown-item edit_defect_btn" >Редактировать</a>
                                     </div>
@@ -82,13 +84,9 @@
                                 <div class="row">
                                     <#list defect.defectImages as di>
                                     <#if di??>
-                                    <div  class="col-lg-6 p-2">
-                                        <@lim.limitation "DTK">
-                                        <a href="${defect.id}/deleteDefectImg/${di}" style="bottom: 15px; position: absolute; right: 15px;" class="btn btn-danger">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                        </@lim.limitation>
-                                        <img  class="img_def"  src="/image/${di}">
+                                    <div  class="col-4 p-2">
+
+                                        <img  class="img_def" data-toggle="modal" data-target="#imageDefectSlider" src="/image/${defect.product.name}__${defect.product.UUID}/${defect.id}/${di}">
                                     </div>
                                     </#if>
                                     </#list>
@@ -119,11 +117,11 @@
 
                             </div>
                         </div>
-                    </div>
+
                     <!-- /.col defect -->
 
                     <!-- start col defectCorrection -->
-                    <div class="col-lg-6">
+
                         <#if defect.defectCorrection??>
                             <div class="card mb-4">
                                 <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
@@ -140,7 +138,9 @@
                                     </div>
                                     </@lim.limitation>
                                 </div>
+
                                 <div class="card-body">
+
                                     <div class="correction-head">
                                         <p>Комментарий: ${defect.defectCorrection.message}</p>
                                         <p>Виновник: ${defect.defectCorrection.culprit}</p>
@@ -175,13 +175,9 @@
                                     <div class="row">
                                         <#list defect.defectCorrection.imageCorrections as img>
                                         <#if img??>
-                                        <div class="col-lg-6 p-2">
-                                            <@lim.limitation "RC_EMPLOYEE">
-                                            <a href="${defect.id}/deleteImgCorrection/${img}" style="bottom: 15px; position: absolute; right: 15px;" class="btn btn-danger">
-                                                <i class="fas fa-trash"></i>
-                                            </a>
-                                            </@lim.limitation>
-                                            <img  class="img_def"  src="/image/${img}">
+                                        <div class="col-4 p-2">
+
+                                            <img class="img_def" data-toggle="modal" data-target="#imageCorrectionSlider" src="/image/${defect.product.name}__${defect.product.UUID}/${defect.id}/${defect.defectCorrection.id}/${img}">
                                         </div>
                                         </#if>
                                         </#list>
@@ -257,6 +253,17 @@
                         </#if>
                     </div>
                     <!-- /.col defectCorrection -->
+                    <div class="col-lg-6">
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                Default Card Example
+                            </div>
+                            <div class="card-body">
+                                This card uses Bootstrap's default styling with no utility classes added. Global
+                                styles are the only things modifying the look and feel of this default card example.
+                            </div>
+                        </div>
+                    </div>
 
 
 
@@ -276,11 +283,12 @@
         <@lim.limitation "RC_EMPLOYEE">
         <#if defect.defectCorrection.status == "REJECTED">
         <div class="col-md-auto col-sm-12">
-            <a href="${defect.id}/changeDefectCorrectionStatus/1">
-                <div class="col-12 btn btn-success">
-                    <span class="text">Отправить на проверку</span>
+            <form action="${defect.id}/changeDefectCorrectionStatus/1" method="post">
+                <div class="col-12">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <button class="btn btn-success" type="submit">Отправить на проверку</button>
                 </div>
-            </a>
+            </form>
             <div class="my-2"></div>
         </div>
         </#if>
@@ -288,23 +296,7 @@
 
 
 
-        <@lim.limitation "DTK">
-        <#if defect.defectCorrection.status == "PENDING">
-        <div class="col-md-auto col-sm-12">
-            <a href="${defect.id}/changeDefectCorrectionStatus/0">
-                <div  class="col-12 btn btn-success">
-                    <span class="text">Принять</span>
-                </div>
-            </a>
-            <div class="my-2"></div>
-            <a href="${defect.id}/changeDefectCorrectionStatus/2">
-                <div class="col-12 btn btn-danger">
-                    <span class="text">Отклонить</span>
-                </div>
-            </a>
-        </div>
-        </#if>
-        </@lim.limitation>
+
     </div>
 </div>
 </#if>
@@ -324,6 +316,145 @@
 </div>
 <!-- End of Page Wrapper -->
 
+<!-- finishDefect Button-->
+<@lim.limitation "DTK">
+<#if defect.defectCorrection??>
+    <#if defect.defectCorrection.status == "PENDING" || defect.defectCorrection.status == "ACCEPTED">
+        <button type="button" data-toggle="modal" data-target="#addDefectModal" style="bottom:20px; right: 20px; position:fixed; height:45px; width:45px; font-size:23px; z-index:5;" class="btn btn-primary btn-circle">
+            <i class="fas fa-arrow-right"></i>
+        </button>
+    </#if>
+</#if>
+</@lim.limitation>
+<!-- finishDefect Modal-->
+<@lim.limitation "DTK">
+<div class="modal fade" id="addDefectModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog  modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Выберите действие</h5>
+                <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <form method="post" enctype="multipart/form-data">
+                <div class="modal-body">
+
+                    <div class="form-row d-block">
+                        <div class="mb-3">
+                            <div class="form-group">
+                                <input type="hidden" name="_csrf" value="${_csrf.token}">
+                                <label>Введите комментарий</label>
+                                <textarea type="text" class="form-control" name="dtkComment"  placeholder="Комментарий"></textarea>
+                            </div>
+                        </div>
+
+
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-secondary" type="button" data-dismiss="modal">Отмена</button>
+                    <input class="btn btn-danger" formaction="${defect.id}/changeDefectCorrectionStatus/2" type="submit" value="Отклонить"/>
+                    <input class="btn btn-success" formaction="${defect.id}/changeDefectCorrectionStatus/0" type="submit" value="Принять"/>
+
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+</@lim.limitation>
+
+
+<!--ImageSlider Modal-->
+<div class="modal fade" id="imageDefectSlider"   tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div style="border:none;" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModal1">Просмотр изображений</h5>
+                <button class="close slider_close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+                <div class="modal-body p-0">
+
+                    <div id="carouselExampleControls" class="carousel slide" data-interval="false" data-ride="carousel">
+                        <div class="carousel-inner">
+                            <#list defect.defectImages as di>
+                            <#if di??>
+                            <div class="carousel-item">
+                                <@lim.limitation "DTK">
+                                <a href="${defect.id}/deleteDefectImg/${di}" style="bottom: 15px; z-index:999; position: absolute; right: 15px;" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </a>
+                                </@lim.limitation>
+                                <img style="max-height:700px;" src="/image/${defect.product.name}__${defect.product.UUID}/${defect.id}/${di}" class="d-block w-100">
+                            </div>
+                            </#if>
+                            </#list>
+                        </div>
+                        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Предыдущий</span>
+                        </a>
+                        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="sr-only">Следующий</span>
+                        </a>
+                    </div>
+
+                </div>
+        </div>
+    </div>
+</div>
+
+
+<!--ImageCorrectionSlider Modal-->
+<div class="modal fade" id="imageCorrectionSlider"  tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-centered" role="document">
+        <div style="border:none;" class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="Modal">Просмотр изображений</h5>
+                <button class="close slider_close" type="button" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+
+            <div class="modal-body p-0">
+
+                <div id="carouseControls1" class="carousel slide" data-interval="false" data-ride="carousel">
+                    <div class="carousel-inner">
+                        <#if defect.defectCorrection??>
+                        <#list defect.defectCorrection.imageCorrections as img>
+                        <#if img??>
+                        <div class="carousel-item">
+                            <@lim.limitation "RC_EMPLOYEE">
+                            <a href="${defect.id}/deleteImgCorrection/${img}" style="bottom: 15px; z-index:999; position: absolute; right: 15px;" class="btn btn-danger">
+                                <i class="fas fa-trash"></i>
+                            </a>
+                        </@lim.limitation>
+                        <img style="max-height:700px;" src="/image/${defect.product.name}__${defect.product.UUID}/${defect.id}/${defect.defectCorrection.id}/${img}" class="d-block w-100">
+                        </div>
+                        </#if>
+                        </#list>
+                        </#if>
+                </div>
+                <a class="carousel-control-prev" href="#carouseControls1" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Предыдущий</span>
+                </a>
+                <a class="carousel-control-next" href="#carouseControls1" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Следующий</span>
+                </a>
+            </div>
+
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <!-- Logout Modal-->
@@ -349,6 +480,17 @@
         $('.form-edit-correction-head').css('display','none');
         $('.correction-head').css('display','block');
     });
+
+    $('.img_def').on('click',function(){
+        $elements = document.getElementsByClassName("carousel-item");
+        $.each($elements, function(index,element) {
+            $(this).removeClass("active");
+            });
+        $src_data = $(this).attr("src");
+        $('[src="'+$src_data+'"]').closest(".carousel-item").addClass("active");
+
+    });
+
 
 
     });

@@ -1,8 +1,11 @@
 package com.example.cometa.controller;
 
 import com.example.cometa.domain.*;
+import com.example.cometa.domain.robcom.Defect;
+import com.example.cometa.domain.robcom.Product;
 import com.example.cometa.repos.DefectRepo;
 import com.example.cometa.repos.ProductRepo;
+import com.example.cometa.service.ImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -13,10 +16,9 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.ui.Model;
-import java.io.File;
+
 import java.io.IOException;
 import java.util.Map;
-import java.util.UUID;
 
 @Controller
 public class ProductController {
@@ -24,7 +26,8 @@ public class ProductController {
     @Autowired
     private ProductRepo productRepo;
 
-
+    @Autowired
+    ImageService imageService;
 
     @Autowired
     private DefectRepo defectRepo;
@@ -45,29 +48,11 @@ public class ProductController {
     @PostMapping("/products")
     public String add(@RequestParam String name,
                       @RequestParam String description,
-                      @RequestParam("file") MultipartFile file,
-                      Map<String, Object> model) throws IOException {
-        Product product = new Product(name, description);
+                      @RequestParam("file") MultipartFile file
+                      ) throws IOException {
 
-        if (file != null && !file.getOriginalFilename().isEmpty()){
-
-            File uploadDir = new File(uploadPath);
-            if (!uploadDir.exists()){
-                uploadDir.mkdir();
-            }
-
-            String uuidFile = UUID.randomUUID().toString();
-            String resultFileName = uuidFile + "." + file.getOriginalFilename();
-
-            file.transferTo(new File(uploadPath + "/" + resultFileName));
-
-            product.setFilename(resultFileName);
-        }
-
+        Product product = imageService.addProductImage(new Product(name, description), file);
         productRepo.save(product);
-        Iterable<Product> products = productRepo.findAll();
-
-        model.put("products", products);
         return "redirect:/products";
     }
 

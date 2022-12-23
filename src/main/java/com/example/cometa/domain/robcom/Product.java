@@ -1,4 +1,4 @@
-package com.example.cometa.domain;
+package com.example.cometa.domain.robcom;
 
 import javax.persistence.*;
 import java.util.Set;
@@ -15,6 +15,7 @@ public class Product {
     private String name;
     private String description;
     private String filename;
+    private String UUID;
 
     @OneToMany(mappedBy = "product", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private Set<Defect> defectSet;
@@ -66,5 +67,13 @@ public class Product {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
     }
 }

@@ -1,9 +1,8 @@
 package com.example.cometa.repos;
 
-import com.example.cometa.domain.Defect;
-import com.example.cometa.domain.Product;
+import com.example.cometa.domain.robcom.Defect;
+import com.example.cometa.domain.robcom.Product;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
 

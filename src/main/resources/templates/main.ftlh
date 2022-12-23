@@ -95,7 +95,6 @@
                                     <th>Количество</th>
                                     <th>Действия</th>
                                     <th></th>
-                                    <!--<th>Salary</th>-->
                                 </tr>
                                 </thead>
                                 <tfoot>

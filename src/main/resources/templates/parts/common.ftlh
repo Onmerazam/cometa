@@ -12,6 +12,7 @@
 
 
 
+
     <!-- Custom fonts for this template -->
     <link href="/static/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link
@@ -20,6 +21,7 @@
 
     <!-- Custom styles for this template -->
     <link href="/static/css/sb-admin-2.min.css" rel="stylesheet">
+
     <link href="/static/css/img_pr.css" rel="stylesheet">
 
     <!-- Custom styles for this page -->

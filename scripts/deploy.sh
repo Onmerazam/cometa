@@ -1,4 +1,4 @@
-#!/usr/bin/env bash
+java#!/usr/bin/env bash
 
 mvn clean package
 

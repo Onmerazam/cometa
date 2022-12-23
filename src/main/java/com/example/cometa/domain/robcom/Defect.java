@@ -1,8 +1,8 @@
-package com.example.cometa.domain;
+package com.example.cometa.domain.robcom;
 
 import javax.persistence.*;
 import javax.persistence.Entity;
-import java.util.Set;
+import java.util.List;
 
 @Entity
 public class Defect {
@@ -23,15 +23,15 @@ public class Defect {
     @ElementCollection
     @CollectionTable(name="defect_img", joinColumns=@JoinColumn(name = "Defect_id"))
     @Column(name="image_address")
-    private Set<String> defectImages;
+    private List<String> defectImages;
+
 
     public Defect(){
 
     }
-    public Defect(String description, Product product, Set<String> defectImages){
+    public Defect(String description, Product product){
         this.product = product;
         this.description = description;
-        this.defectImages = defectImages;
     }
 
     public Integer getId() {
@@ -66,15 +66,12 @@ public class Defect {
         this.defectCorrection = defectCorrection;
     }
 
-    public Set<String> getDefectImages() {
+    public List<String> getDefectImages() {
         return defectImages;
     }
 
-    public void setDefectImages(Set<String> defectImages) {
+    public void setDefectImages(List<String> defectImages) {
         this.defectImages = defectImages;
     }
 
-    enum Status{
-        CORRECTED, NOT_CORRECTED;
-    }
 }

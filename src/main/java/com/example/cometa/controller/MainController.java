@@ -1,6 +1,6 @@
 package com.example.cometa.controller;
 
-import com.example.cometa.domain.Color;
+import com.example.cometa.domain.robcom.Color;
 import com.example.cometa.domain.User;
 import com.example.cometa.repos.ColorRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -47,13 +47,10 @@ public class MainController {
     public String add(@RequestParam Integer numberColor,
                       @RequestParam String coatingType,
                       @RequestParam String manufact,
-                      @RequestParam double value,
-                      Map<String, Object> model){
+                      @RequestParam double value){
         Color color = new Color(numberColor, coatingType, manufact, value );
         colorRepo.save(color);
-        Iterable<Color> colors = colorRepo.findAll();
-        model.put("colors",colors);
-        return "main";
+        return "redirect:/main";
     }
 
     @PostMapping("filter")

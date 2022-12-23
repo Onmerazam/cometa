@@ -61,7 +61,7 @@
                             <div  class="card-body p-0">
 
                                 <#if product.filename??>
-                                    <img class="img_product"  src="/image/${product.filename}">
+                                    <img class="img_product"  src="/image/${product.name}__${product.UUID}/${product.filename}">
                                 </#if>
 
                             </div>
@@ -137,7 +137,7 @@
                         </div>
                         <div class="mb-3">
                             <div class="form-group">
-                                <textarea type="text" class="form-control" name="description"  placeholder="Описание">Описание</textarea>
+                                <textarea type="text" class="form-control" name="description"  placeholder="Описание"></textarea>
                             </div>
                         </div>
                         <div class="mb-3">

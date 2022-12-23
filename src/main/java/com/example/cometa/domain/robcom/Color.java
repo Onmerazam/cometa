@@ -1,4 +1,4 @@
-package com.example.cometa.domain;
+package com.example.cometa.domain.robcom;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;

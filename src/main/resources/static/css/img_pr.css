@@ -4,18 +4,25 @@
      width: 100%;
 }
 
+.img_machine{
+    object-fit: contain;
+    height:185px;
+     width: 100%;
+}
+
 .img_def_prev{
     object-fit: cover;
-    max-height:130px;
+    max-height:120px;
     width: 100%;
     border-radius:5px;
 }
 .img_def{
     object-fit: cover;
-    max-height:290px;
+    max-height:210px;
     width: 100%;
     height:100%;
     border-radius:5px;
+    cursor:pointer;
 }
 .form-edit-defect-head{
     display:none;
@@ -30,7 +37,7 @@
   }
   .img_def {
 
-      max-height: 250px;
+      max-height: 79px;
       border-radius:5px;
     }
 }

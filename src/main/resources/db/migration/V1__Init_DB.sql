@@ -48,6 +48,15 @@ create table product (
     primary key (id)
 );
 
+create table machine (
+    id bigint not null auto_increment,
+    category varchar(255),
+    image_address varchar(255),
+    name varchar(255),
+    status bit not null,
+    primary key (id)
+);
+
 create table user_role (
     user_id bigint not null,
     roles varchar(255)

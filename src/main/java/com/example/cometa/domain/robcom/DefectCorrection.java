@@ -1,8 +1,7 @@
-package com.example.cometa.domain;
+package com.example.cometa.domain.robcom;
 
 import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
 
 @Entity
 public class DefectCorrection {
@@ -12,6 +11,7 @@ public class DefectCorrection {
     private String message;
     private String culprit;
     private CorrectStatus status;
+    private String dtkComment;
     @OneToOne
     @JoinColumn(name = "defect_id")
     private Defect defect;
@@ -19,16 +19,15 @@ public class DefectCorrection {
     @ElementCollection
     @CollectionTable(name="correct_img", joinColumns=@JoinColumn(name = "DefectCorrection_id"))
     @Column(name="image_address")
-    private Set<String> imageCorrections;
+    private List<String> imageCorrections;
 
     public DefectCorrection(){
 
     }
-    public DefectCorrection (String message, String culprit, Defect defect, Set<String> imageCorrections){
-        this.defect = defect;
+    public DefectCorrection (String message, String culprit, Defect defect){
         this.message = message;
-        this.imageCorrections = imageCorrections;
         this.culprit = culprit;
+        this.defect = defect;
     }
 
     public Integer getId() {
@@ -65,11 +64,11 @@ public class DefectCorrection {
 
 
 
-    public Set<String> getImageCorrections() {
+    public List<String> getImageCorrections() {
         return imageCorrections;
     }
 
-    public void setImageCorrections(Set<String> imageCorrections) {
+    public void setImageCorrections(List<String> imageCorrections) {
         this.imageCorrections = imageCorrections;
     }
 
@@ -79,5 +78,13 @@ public class DefectCorrection {
 
     public void setStatus(CorrectStatus status) {
         this.status = status;
+    }
+
+    public String getDtkComment() {
+        return dtkComment;
+    }
+
+    public void setDtkComment(String dtkComment) {
+        this.dtkComment = dtkComment;
     }
 }
